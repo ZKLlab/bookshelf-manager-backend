@@ -1,0 +1,24 @@
+spring:
+  data:
+    mongodb:
+      host: ${MONGODB_HOST:mongodb-dev}
+      port: ${MONGODB_PORT:27017}
+      database: ${MONGODB_DATABASE:bookshelf}
+      username: ${MONGODB_USERNAME:admin}
+      password: ${MONGODB_PASSWORD:password}
+  security:
+    oauth2:
+      client:
+        registration:
+          shuosc:
+            client-id: ${OAUTH2_CLIENT_SECRET:bookshelf-dev}
+            client-secret: ${OAUTH2_CLIENT_SECRET:my-secret}
+        provider:
+          shuosc:
+            issuer-uri: ${KEYCLOAK_ORIGIN:http://keycloak:8080}/auth/realms/shuosc
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ORIGIN:http://keycloak:8080}/auth/realms/shuosc
+          jwk-set-uri: ${KEYCLOAK_ORIGIN:http://keycloak:8080}/auth/realms/shuosc/protocol/openid-connect/certs
+server:
+  port: 8080
