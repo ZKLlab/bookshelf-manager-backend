@@ -8,14 +8,6 @@ spring:
       password: ${MONGODB_PASSWORD:password}
   security:
     oauth2:
-      client:
-        registration:
-          shuosc:
-            client-id: ${OAUTH2_CLIENT_ID:bookshelf-dev}
-            client-secret: ${OAUTH2_CLIENT_SECRET:my-secret}
-        provider:
-          shuosc:
-            issuer-uri: ${KEYCLOAK_ORIGIN:http://keycloak:8080}/auth/realms/shuosc
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_ORIGIN:http://keycloak:8080}/auth/realms/shuosc
