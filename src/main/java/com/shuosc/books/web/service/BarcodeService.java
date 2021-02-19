@@ -1,8 +1,8 @@
 package com.shuosc.books.web.service;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
 
 public interface BarcodeService {
-    Image getBarcodeImage(String string, int width, int height);
+    BufferedImage getBarcodeImage(String string, int width, int height);
 }
