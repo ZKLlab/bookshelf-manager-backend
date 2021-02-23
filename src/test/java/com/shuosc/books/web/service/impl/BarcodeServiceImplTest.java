@@ -7,8 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 @SpringBootTest
@@ -22,5 +24,22 @@ class BarcodeServiceImplTest {
         var outImage = barcodeService.getBarcodeImage("1234567", 300, 100);
         var outFile = new File("getBarcodeImage-local.png");
         ImageIO.write(outImage, "png", outFile);
+    }
+    @Test
+    void getBarcodeResult() throws IOException {
+        BufferedImage img = ImageIO.read(new File("test-local.jpg"));
+        var result = barcodeService.getBarcodeResult(img);//img to array
+        var i = 0;
+        System.out.println("Books detected: (Not sorted)");
+        for (var barcodeResult : result) {
+            System.out.println("Num: "+i++);
+            System.out.println("Text: "+barcodeResult.getText());
+            System.out.println("Pos: "+barcodeResult.getResultPoint());
+        }
+        ArrayList<String> rightSequence = new ArrayList<>();
+        rightSequence.add("5833616");
+        rightSequence.add("9149478");
+        rightSequence.add("5297170");//for testing
+        System.out.println("Is the array sorted? "+barcodeService.isSorted(3,result, rightSequence));//n stands for the seq of the new book put into the existed seq
     }
 }
