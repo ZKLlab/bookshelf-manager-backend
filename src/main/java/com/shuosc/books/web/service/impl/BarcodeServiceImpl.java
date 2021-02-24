@@ -54,10 +54,8 @@ public class BarcodeServiceImpl implements BarcodeService {
 
     @Override
     public boolean isSorted(int n, List<BarcodeResult> barcodeResult, List<String> rightSequence) {
-        sortBarcodeResult(barcodeResult);
+        var seq = getBarcodeString(barcodeResult);
         n -= 1;
-        var seq = new ArrayList<String>();
-        barcodeResult.forEach(result -> seq.add(result.getText()));
         var specifiedSeq = new ArrayList<String>();
         if (n == 0) {
             specifiedSeq.add(rightSequence.get(0));
@@ -77,11 +75,14 @@ public class BarcodeServiceImpl implements BarcodeService {
         return Collections.indexOfSubList(seq, specifiedSeq) >= 0;
     }
 
-    private void sortBarcodeResult(List<BarcodeResult> barcodeResult) {
+    private ArrayList<String> getBarcodeString(List<BarcodeResult> barcodeResult) {
         barcodeResult.sort((b1, b2) -> {
             if (b1.getResultPoint() == b2.getResultPoint())
                 return 0;
             return b1.getResultPoint() > b2.getResultPoint() ? -1 : 1;
         });
-    } // used to sort the codes
+        var seq = new ArrayList<String>();
+        barcodeResult.forEach(result -> seq.add(result.getText()));
+        return seq;
+    }
 }
