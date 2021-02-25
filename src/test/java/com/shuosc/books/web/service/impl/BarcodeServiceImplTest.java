@@ -1,6 +1,5 @@
 package com.shuosc.books.web.service.impl;
 
-import com.shuosc.books.web.LabelService.LabelService;
 import com.shuosc.books.web.service.BarcodeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ class BarcodeServiceImplTest {
 
     @Test
     void getBarcodeImage() throws IOException {
-        var outImage = barcodeService.getBarcodeImage("1234567", 300, 100);
+        var outImage = barcodeService.generateBarcodeImage("1234567", 300, 100);
         var outFile = new File("getBarcodeImage-local.png");
         ImageIO.write(outImage, "png", outFile);
     }
@@ -45,15 +44,5 @@ class BarcodeServiceImplTest {
         // n stands for the seq of the new book put into the existed seq
         System.out.println("Is the array sorted? " + barcodeService.isSorted(3, result, rightSequence));
         Assert.isTrue(barcodeService.isSorted(3, result, rightSequence), "The array should be sorted");
-    }
-
-    @Test
-    void testLabelService() throws IOException {
-        var callNum = "K836.126.1=51/TP123.321";
-        var barcodeNum = "5833616";
-        var labelService = new LabelService();
-        var outImage = labelService.generateLabel(callNum, barcodeNum);
-        var outFile = new File("label-local.png");
-        ImageIO.write(outImage, "png", outFile);
     }
 }

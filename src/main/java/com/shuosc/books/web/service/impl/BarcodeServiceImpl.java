@@ -18,7 +18,7 @@ import java.util.*;
 @Service
 public class BarcodeServiceImpl implements BarcodeService {
     @Override
-    public BufferedImage getBarcodeImage(String string, int width, int height) {
+    public BufferedImage generateBarcodeImage(String string, int width, int height) {
         var writer = new Code128Writer();
         var bitMatrix = writer.encode(string, BarcodeFormat.CODE_128, width, height);
         return MatrixToImageWriter.toBufferedImage(bitMatrix);

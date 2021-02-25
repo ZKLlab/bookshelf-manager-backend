@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface BarcodeService {
-    BufferedImage getBarcodeImage(String string, int width, int height);
+    BufferedImage generateBarcodeImage(String string, int width, int height);
 
     List<BarcodeResult> getBarcodeResult(BufferedImage img);
 
