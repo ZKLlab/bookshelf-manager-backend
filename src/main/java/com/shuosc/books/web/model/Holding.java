@@ -1,5 +1,6 @@
 package com.shuosc.books.web.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.shuosc.books.web.enums.HoldingState;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -12,6 +13,7 @@ public class Holding {
     @Id
     private String id;
     @DBRef
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Book book;
     private String barcode;
     private String place;

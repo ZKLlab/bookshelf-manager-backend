@@ -57,8 +57,21 @@ public class AdminController {
         return Return.success("创建成功", book);
     }
 
+    @GetMapping(path = "/books/{id}/holdings")
+    public Return listHoldings(@PathVariable String id) {
+        var book = bookService.findById(id);
+
+        if (book == null)
+            return Return.failure("该书籍不存在");
+
+        var holdings = holdingService.findByBook(book);
+        holdings.forEach(holding -> holding.setBook(null));
+
+        return Return.success("", holdings);
+    }
+
     @PostMapping(path = "/books/{id}/holdings")
-    public Return saveHolding(@PathVariable String id, @RequestBody @Valid HoldingDto dto) {
+    public Return createHolding(@PathVariable String id, @RequestBody @Valid HoldingDto dto) {
         var book = bookService.findById(id);
 
         if (book == null)
