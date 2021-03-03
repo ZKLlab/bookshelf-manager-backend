@@ -5,7 +5,6 @@ import com.shuosc.books.web.model.Holding;
 import com.shuosc.books.web.enums.HoldingState;
 import com.shuosc.books.web.service.HoldingService;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -24,13 +23,13 @@ public class HoldingServiceImpl implements HoldingService {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public Holding findByBarcode(Long barcode) {
+    public Holding findByBarcode(String barcode) {
         return mongoTemplate
                 .findOne(Query.query(Criteria.where("barcode").is(barcode)),
                         Holding.class);
     }
 
-    public void update(ObjectId id, Holding holding) {
+    public void update(String id, Holding holding) {
         Document doc = new Document();
         mongoTemplate.getConverter().write(holding, doc);
         Update update = Update.fromDocument(doc);
@@ -41,7 +40,7 @@ public class HoldingServiceImpl implements HoldingService {
     }
 
     @Override
-    public Holding findById(ObjectId id) {
+    public Holding findById(String id) {
         return mongoTemplate
                 .findOne(Query.query(Criteria.where("id").is(id)),
                         Holding.class);
@@ -58,7 +57,7 @@ public class HoldingServiceImpl implements HoldingService {
     }
 
     @Override
-    public void updateSat(ObjectId id, HoldingState state) {
+    public void updateSat(String id, HoldingState state) {
         mongoTemplate
                 .updateFirst(Query.query(Criteria.where("id").is(id)),
                         Update.update("state", state),
@@ -66,7 +65,7 @@ public class HoldingServiceImpl implements HoldingService {
     }
 
     @Override
-    public void deleteById(ObjectId id) {
+    public void deleteById(String id) {
         mongoTemplate
                 .remove(Query.query(Criteria.where("id").is(id)),
                         Holding.class);

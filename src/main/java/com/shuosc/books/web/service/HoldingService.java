@@ -3,25 +3,24 @@ package com.shuosc.books.web.service;
 import com.shuosc.books.web.enums.HoldingState;
 import com.shuosc.books.web.model.Book;
 import com.shuosc.books.web.model.Holding;
-import org.bson.types.ObjectId;
 
 import java.util.List;
 
 
 public interface HoldingService {
-    Holding findByBarcode(Long barcode);
+    Holding findByBarcode(String barcode);
 
-    void update(ObjectId id, Holding holding);
+    void update(String id, Holding holding);
 
-    Holding findById(ObjectId id);
+    Holding findById(String id);
 
     List<Holding> findAll();
 
     void save(Holding holding);
 
-    void updateSat(ObjectId id, HoldingState state);
+    void updateSat(String id, HoldingState state);
 
-    void deleteById(ObjectId id);
+    void deleteById(String id);
 
     List<Holding> findByBook(Book book);
 

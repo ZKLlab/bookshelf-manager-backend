@@ -1,14 +1,14 @@
 package com.shuosc.books.web.model;
 
 public class Return {
-    private int returnCode;
+    private Integer code;
     private String msg;
-    private Object o;
+    private Object data;
 
-    public Return(int returnCode, String msg, Object o) {
-        this.returnCode = returnCode;
+    public Return(int code, String msg, Object data) {
+        this.code = code;
         this.msg = msg;
-        this.o = o;
+        this.data = data;
     }
 
     public static Return success(String msg) {
@@ -27,12 +27,12 @@ public class Return {
         return new Return(500, msg, o);
     }
 
-    public int getReturnCode() {
-        return returnCode;
+    public Integer getCode() {
+        return code;
     }
 
-    public void setReturnCode(int returnCode) {
-        this.returnCode = returnCode;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
     public String getMsg() {
@@ -43,11 +43,11 @@ public class Return {
         this.msg = msg;
     }
 
-    public Object getO() {
-        return o;
+    public Object getData() {
+        return data;
     }
 
-    public void setO(Object o) {
-        this.o = o;
+    public void setData(Object data) {
+        this.data = data;
     }
 }

@@ -46,14 +46,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findById(ObjectId id) {
+    public Book findById(String id) {
         return mongoTemplate
                 .findOne(Query.query(Criteria.where("id").is(id)),
                         Book.class);
     }
 
     @Override
-    public void deleteById(ObjectId id) {
+    public void deleteById(String id) {
         mongoTemplate
                 .remove(Query.query(Criteria.where("id").is(id)),
                         Book.class);

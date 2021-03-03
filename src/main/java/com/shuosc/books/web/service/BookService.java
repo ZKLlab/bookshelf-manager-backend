@@ -15,9 +15,9 @@ public interface BookService {
 
     void update(ObjectId id, Book book);
 
-    Book findById(ObjectId id);
+    Book findById(String id);
 
-    void deleteById(ObjectId id);
+    void deleteById(String id);
 
     void saveAll(List<Book> books);
 }

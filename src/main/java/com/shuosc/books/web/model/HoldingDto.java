@@ -2,12 +2,24 @@ package com.shuosc.books.web.model;
 
 import com.shuosc.books.web.enums.HoldingState;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 
 public class HoldingDto {
+    @NotNull
     private String place;
+    @NotNull
+    @Min(1)
     private Integer shelf;
+    @NotNull
+    @Min(1)
     private Integer row;
+    @NotNull
+    @NotBlank
     private String callNumber;
+    @NotNull
     private HoldingState state;
 
     public String getPlace() {

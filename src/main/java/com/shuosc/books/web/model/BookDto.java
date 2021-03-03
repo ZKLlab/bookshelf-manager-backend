@@ -1,20 +1,42 @@
 package com.shuosc.books.web.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+
 public class BookDto {
+    @NotNull
+    @NotBlank
     private String title;
+    @NotNull
     private String parallelTitle;
+    @NotNull
+    @NotBlank
     private String author;
+    @NotNull
     private String seriesTitle;
+    @NotNull
     private String summary;
+    @NotNull
+    @NotBlank
     private String publisher;
-    private String[] subjects;
-    private Integer[] publicationDate;
+    @NotNull
+    private List<String> subjects;
+    @NotNull
+    private List<Integer> publicationDate;
+    @NotNull
     private String clcClassification;
+    @NotNull
     private String isbn;
+    @NotNull
     private String language;
+    @NotNull
     private Integer pages;
+    @NotNull
     private Integer price;
     private Integer doubanId;
+    @NotNull
     private Boolean visible;
 
     public String getTitle() {
@@ -65,19 +87,19 @@ public class BookDto {
         this.publisher = publisher;
     }
 
-    public String[] getSubjects() {
+    public List<String> getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(String[] subjects) {
+    public void setSubjects(List<String> subjects) {
         this.subjects = subjects;
     }
 
-    public Integer[] getPublicationDate() {
+    public List<Integer> getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(Integer[] publicationDate) {
+    public void setPublicationDate(List<Integer> publicationDate) {
         this.publicationDate = publicationDate;
     }
 

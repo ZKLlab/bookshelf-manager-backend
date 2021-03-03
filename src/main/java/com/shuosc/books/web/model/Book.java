@@ -1,47 +1,54 @@
 package com.shuosc.books.web.model;
 
-import org.bson.BsonTimestamp;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.core.index.TextIndexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
 
-@Document
+
+@Document("books")
 public class Book {
     @Id
-    private ObjectId id;
+    private String id;
+    @TextIndexed
     private String title;
+    @TextIndexed(weight = 0.9f)
     private String parallelTitle;
+    @TextIndexed(weight = 0.9f)
     private String author;
+    @TextIndexed(weight = 0.8f)
     private String seriesTitle;
+    @TextIndexed(weight = 0.6f)
     private String summary;
+    @TextIndexed(weight = 0.5f)
     private String publisher;
-    private String[] subjects;
-    private Integer[] publicationDate;
+    @TextIndexed
+    private List<String> subjects;
+    private List<Integer> publicationDate;
+    @TextIndexed
     private String clcClassification;
+    @TextIndexed
     private String isbn;
     private String language;
     private Integer pages;
     private Integer price;
     private Integer doubanId;
     private Boolean visible;
-    private String creatorSub;
-    private String updaterSub;
-    private BsonTimestamp createdTime;
-    private BsonTimestamp updatedTime;
-    private BsonTimestamp deletedTime;
     @Version
     private Long version;
 
     public Book(String title, String parallelTitle,
                 String author, String seriesTitle,
                 String summary, String publisher,
-                String[] subjects, Integer[] publicationDate,
+                List<String> subjects, List<Integer> publicationDate,
                 String clcClassification, String isbn,
                 String language, Integer pages,
                 Integer price, Integer doubanId,
-                Boolean visible, String creatorSub) {
+                Boolean visible) {
         this.title = title;
         this.parallelTitle = parallelTitle;
         this.author = author;
@@ -57,18 +64,16 @@ public class Book {
         this.price = price;
         this.doubanId = doubanId;
         this.visible = visible;
-        this.creatorSub = creatorSub;
-        this.createdTime = new BsonTimestamp(System.currentTimeMillis());
     }
 
     public Book() {
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -120,19 +125,19 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public String[] getSubjects() {
+    public List<String> getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(String[] subjects) {
+    public void setSubjects(List<String> subjects) {
         this.subjects = subjects;
     }
 
-    public Integer[] getPublicationDate() {
+    public List<Integer> getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(Integer[] publicationDate) {
+    public void setPublicationDate(List<Integer> publicationDate) {
         this.publicationDate = publicationDate;
     }
 
@@ -192,60 +197,11 @@ public class Book {
         this.visible = visible;
     }
 
-    public String getCreatorSub() {
-        return creatorSub;
-    }
-
-    public void setCreatorSub(String creatorSub) {
-        this.creatorSub = creatorSub;
-    }
-
-    public String getUpdaterSub() {
-        return updaterSub;
-    }
-
-    public void setUpdaterSub(String updaterSub) {
-        this.updaterSub = updaterSub;
-    }
-
-    public BsonTimestamp getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(BsonTimestamp createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public BsonTimestamp getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(BsonTimestamp updatedTime) {
-        this.updatedTime = updatedTime;
-    }
-
-    public BsonTimestamp getDeletedTime() {
-        return deletedTime;
-    }
-
-    public void setDeletedTime(BsonTimestamp deletedTime) {
-        this.deletedTime = deletedTime;
-    }
-
     public Long getVersion() {
         return version;
     }
 
     public void setVersion(Long version) {
         this.version = version;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", publisher='" + publisher + '\'' +
-                '}';
     }
 }

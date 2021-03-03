@@ -6,15 +6,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
-@Document
+@Document("loans")
 public class Loan {
     @Id
-    private ObjectId id;
+    private String id;
     private String sub;
-    private ArrayList<Renewal> renewals;
+    private List<Renewal> renewals;
     private Boolean returned;
     private BsonTimestamp lendTime;
     private BsonTimestamp dueTime;
@@ -26,7 +26,7 @@ public class Loan {
     public Loan() {
     }
 
-    public Loan(Holding holding, String sub, ArrayList<Renewal> renewals, Boolean returned, BsonTimestamp lendTime, BsonTimestamp dueTime, BsonTimestamp returnTime) {
+    public Loan(Holding holding, String sub, List<Renewal> renewals, Boolean returned, BsonTimestamp lendTime, BsonTimestamp dueTime, BsonTimestamp returnTime) {
         this.holding = holding;
         this.sub = sub;
         this.renewals = renewals;
@@ -36,11 +36,11 @@ public class Loan {
         this.returnTime = returnTime;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -60,11 +60,11 @@ public class Loan {
         this.sub = sub;
     }
 
-    public ArrayList<Renewal> getRenewals() {
+    public List<Renewal> getRenewals() {
         return renewals;
     }
 
-    public void setRenewals(ArrayList<Renewal> renewals) {
+    public void setRenewals(List<Renewal> renewals) {
         this.renewals = renewals;
     }
 

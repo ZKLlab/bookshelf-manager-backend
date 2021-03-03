@@ -13,21 +13,21 @@ public interface LoanService {
 
     void save(Loan loan);
 
-    void update(ObjectId id, Loan loan);
+    void update(String id, Loan loan);
 
     List<Loan> findBySub(String sub);
 
     List<Loan> findAll();
 
-    void updateDueTime(ObjectId id);
+    void updateDueTime(String id);
 
-    void updateReturnTime(ObjectId id);
+    void updateReturnTime(String id);
 
     Loan findBySubHolding(String sub, Holding holding);
 
-    void updateRenewals(ObjectId id, Renewal renewal);
+    void updateRenewals(String id, Renewal renewal);
 
-    Loan findById(ObjectId id);
+    Loan findById(String id);
 
     void updateReturnTime(String sub, Holding holding);
 

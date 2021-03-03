@@ -3,7 +3,6 @@ package com.shuosc.books.web.controller;
 import com.shuosc.books.web.model.Return;
 import com.shuosc.books.web.service.BookService;
 import com.shuosc.books.web.service.HoldingService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +28,7 @@ public class BooksController {
     }
 
     @GetMapping(path = "/books/{id}")
-    public Return getBook(@PathVariable ObjectId id) {
+    public Return getBook(@PathVariable String id) {
         var book = bookService.findById(id);
         if (book == null)
             return Return.failure("图书不存在，获取失败");
@@ -38,7 +37,7 @@ public class BooksController {
     }
 
     @GetMapping(path = "/books/{id}/holdings")
-    public Return getBookHoldings(@PathVariable ObjectId id) {
+    public Return getBookHoldings(@PathVariable String id) {
         return Return.success("查询成功",
                 holdingService.findByBook(bookService.findById(id)));
     }

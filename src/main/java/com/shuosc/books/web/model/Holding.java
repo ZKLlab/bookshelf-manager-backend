@@ -1,19 +1,19 @@
 package com.shuosc.books.web.model;
 
 import com.shuosc.books.web.enums.HoldingState;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+
+@Document("holdings")
 public class Holding {
     @Id
-    private ObjectId id;
+    private String id;
     @DBRef
     private Book book;
-    private Long barcode;
+    private String barcode;
     private String place;
     private Integer shelf;
     private Integer row;
@@ -22,7 +22,7 @@ public class Holding {
     @Version
     private Long version;
 
-    public Holding(Book book, Long barcode, String place, Integer shelf, Integer row, String callNumber, HoldingState state) {
+    public Holding(Book book, String barcode, String place, Integer shelf, Integer row, String callNumber, HoldingState state) {
         this.book = book;
         this.barcode = barcode;
         this.place = place;
@@ -35,8 +35,12 @@ public class Holding {
     public Holding() {
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Book getBook() {
@@ -47,11 +51,11 @@ public class Holding {
         this.book = book;
     }
 
-    public Long getBarcode() {
+    public String getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(Long barcode) {
+    public void setBarcode(String barcode) {
         this.barcode = barcode;
     }
 
@@ -101,19 +105,5 @@ public class Holding {
 
     public void setVersion(Long version) {
         this.version = version;
-    }
-
-    @Override
-    public String toString() {
-        return "Holding{" +
-                "id=" + id +
-                ", book=" + book +
-                ", barcode=" + barcode +
-                ", place='" + place + '\'' +
-                ", shelf=" + shelf +
-                ", row=" + row +
-                ", callNumber='" + callNumber + '\'' +
-                ", state=" + state +
-                '}';
     }
 }

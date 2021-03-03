@@ -7,7 +7,6 @@ import com.shuosc.books.web.model.Renewal;
 import com.shuosc.books.web.service.LoanService;
 import org.bson.BsonTimestamp;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -44,7 +43,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void update(ObjectId id, Loan loan) {
+    public void update(String id, Loan loan) {
         Document doc = new Document();
         mongoTemplate.getConverter().write(loan, doc);
         Update update = Update.fromDocument(doc);
@@ -55,7 +54,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void updateReturnTime(ObjectId id) {
+    public void updateReturnTime(String id) {
         Update update = Update.update("returnTime", new BsonTimestamp(System.currentTimeMillis()));
         mongoTemplate
                 .updateFirst(Query.query(Criteria.where("id").is(id)),
@@ -76,7 +75,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void updateRenewals(ObjectId id, Renewal renewal) {
+    public void updateRenewals(String id, Renewal renewal) {
         Loan loan = findById(id);
         List<Renewal> renewals = loan.getRenewals();
         renewals.add(renewal);
@@ -88,7 +87,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public Loan findById(ObjectId id) {
+    public Loan findById(String id) {
         return mongoTemplate
                 .findOne(Query.query(Criteria.where("id").is(id)),
                         Loan.class);
@@ -130,7 +129,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void updateDueTime(ObjectId id) {
+    public void updateDueTime(String id) {
         Update update = Update.update("dueTime", new BsonTimestamp(System.currentTimeMillis() + BooksConstant.BORROWING_TIME_MILLIS));
         mongoTemplate
                 .updateFirst(Query.query(Criteria.where("id").is(id)),

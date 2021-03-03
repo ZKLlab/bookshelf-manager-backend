@@ -23,20 +23,20 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
-public class LoanController {
+public class LoansController {
     private final LoanService loanService;
     private final HoldingService holdingService;
     private final RenewalService renewalService;
 
     @Autowired
-    public LoanController(LoanService loanService, HoldingService holdingService, RenewalService renewalService) {
+    public LoansController(LoanService loanService, HoldingService holdingService, RenewalService renewalService) {
         this.loanService = loanService;
         this.holdingService = holdingService;
         this.renewalService = renewalService;
     }
 
     @PostMapping(path = "/loans/borrow")
-    public Return borrowBook(String sub, @RequestBody Long[] barcodes) {
+    public Return borrowBook(String sub, @RequestBody String[] barcodes) {
         var results = new ArrayList<String[]>();
         for (var barcode : barcodes) {
             var holding = holdingService.findByBarcode(barcode);
@@ -65,7 +65,7 @@ public class LoanController {
     }
 
     @PostMapping(path = "/loans/return")
-    public Return returnBook(String sub, ObjectId holdingId) {
+    public Return returnBook(String sub, String holdingId) {
         Holding holding = holdingService.findById(holdingId);
         if (holding == null)
             return Return.failure("图书不存在, 还书失败");
@@ -87,7 +87,7 @@ public class LoanController {
     }
 
     @PostMapping(path = "/loans/renew/{id}")
-    public Return renew(String sub, @PathVariable ObjectId id, RenewalReason reason) {
+    public Return renew(String sub, @PathVariable String id, RenewalReason reason) {
         Loan loan = loanService.findById(id);
         if (loan == null || !loan.getSub().equals(sub))
             return Return.failure("记录不存在");
