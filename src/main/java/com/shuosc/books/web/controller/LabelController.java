@@ -1,6 +1,5 @@
 package com.shuosc.books.web.controller;
 
-import com.shuosc.books.web.model.Return;
 import com.shuosc.books.web.service.LabelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

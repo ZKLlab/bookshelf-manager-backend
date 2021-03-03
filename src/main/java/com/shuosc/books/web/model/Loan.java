@@ -103,18 +103,4 @@ public class Loan {
     public void setReturnTime(BsonTimestamp returnTime) {
         this.returnTime = returnTime;
     }
-
-    @Override
-    public String toString() {
-        return "Loan{" +
-                "id=" + id +
-                ", holding=" + holding +
-                ", sub='" + sub + '\'' +
-                ", renewals=" + renewals +
-                ", returned=" + returned +
-                ", lendTime=" + lendTime +
-                ", dueTime=" + dueTime +
-                ", returnTime=" + returnTime +
-                '}';
-    }
 }

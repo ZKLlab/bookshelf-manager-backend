@@ -94,12 +94,12 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void updateReturnTime(String sub, Holding holding) {
+    public void updateReturnTime(String id, Holding holding) {
         Update update = Update.update("returnTime", new BsonTimestamp(System.currentTimeMillis()));
         Query query = new Query();
         query.addCriteria(new Criteria()
                 .andOperator(
-                        Criteria.where("sub").is(sub),
+                        Criteria.where("id").is(id),
                         Criteria.where("holding").is(holding)
                 ));
         mongoTemplate
