@@ -1,8 +1,8 @@
 package com.shuosc.books.web.util;
 
+import com.shuosc.books.web.enums.HoldingState;
 import com.shuosc.books.web.model.Book;
 import com.shuosc.books.web.model.Holding;
-import com.shuosc.books.web.model.HoldingState;
 import com.shuosc.books.web.model.Return;
 import com.shuosc.books.web.service.BookService;
 import com.shuosc.books.web.service.HoldingService;
@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ExcelImportUtil {
 
     private ExcelImportUtil() {
@@ -27,9 +28,9 @@ public class ExcelImportUtil {
 
     public static Return importBooksFromFile(MultipartFile file,
                                              BookService bookService) {
-        List<String> strings = new ArrayList<>();
         Workbook wb;
         String filename = file.getOriginalFilename();
+        assert filename != null;
         String suffix = filename.substring(filename.lastIndexOf(".") + 1);
         //把文件转换为输入流
         InputStream inputStream = null;
@@ -93,9 +94,9 @@ public class ExcelImportUtil {
     public static Return importHoldingsFromFile(MultipartFile file,
                                                 HoldingService holdingService,
                                                 BookService bookService) {
-        List<String> strings = new ArrayList<>();
         Workbook wb;
         String filename = file.getOriginalFilename();
+        assert filename != null;
         String suffix = filename.substring(filename.lastIndexOf(".") + 1);
         //把文件转换为输入流
         InputStream inputStream = null;
@@ -170,10 +171,6 @@ public class ExcelImportUtil {
         if (state.matches("(?i)reference"))
             return HoldingState.Reference;
         return null;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(replaceSpace("a a sas    sd"));
     }
 
     public static String replaceSpace(String s) {

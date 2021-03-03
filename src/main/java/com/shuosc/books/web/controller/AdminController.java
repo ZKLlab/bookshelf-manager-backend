@@ -1,10 +1,10 @@
 package com.shuosc.books.web.controller;
 
-import com.shuosc.books.web.dto.BookDto;
-import com.shuosc.books.web.dto.HoldingDto;
+import com.shuosc.books.web.model.BookDto;
+import com.shuosc.books.web.model.HoldingDto;
 import com.shuosc.books.web.model.Book;
 import com.shuosc.books.web.model.Holding;
-import com.shuosc.books.web.model.HoldingState;
+import com.shuosc.books.web.enums.HoldingState;
 import com.shuosc.books.web.model.Return;
 import com.shuosc.books.web.service.BookService;
 import com.shuosc.books.web.service.HoldingService;
@@ -13,10 +13,10 @@ import com.shuosc.books.web.util.ExcelImportUtil;
 import org.bson.BsonTimestamp;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/admin")
@@ -34,17 +34,17 @@ public class AdminController {
 
     @GetMapping(path = "/holdings")
     public Return listHoldings() {
-        return Return.success("查询成功", "List<Holding>", holdingService.findAll());
+        return Return.success("查询成功", holdingService.findAll());
     }
 
     @PostMapping(path = "/books")
-    public Return saveBook(@RequestBody Book book) {
+    public Return createBook(@RequestBody @Validated Book book) {
         bookService.save(book);
         return Return.success("添加成功");
     }
 
     @PostMapping(path = "/holdings")
-    public Return saveHolding(@RequestBody Holding holding) {
+    public Return saveHolding(@RequestBody @Validated Holding holding) {
         if (bookService.findById(holding.getBook().getId()) == null)
             return Return.failure("该书籍不存在, 添加失败");
 
@@ -54,11 +54,11 @@ public class AdminController {
 
     @DeleteMapping(path = "/books/{id}")
     public Return deleteBook(@PathVariable ObjectId id) {
-        Book book = bookService.findById(id);
+        var book = bookService.findById(id);
         if (book == null)
             return Return.failure("该书籍不存在, 删除失败");
 
-        List<Holding> holdings = holdingService.findByBookId(book);
+        var holdings = holdingService.findByBook(book);
         if (!holdings.isEmpty())
             return Return.failure("该书籍有藏书在馆中, 删除失败");
 
@@ -68,7 +68,7 @@ public class AdminController {
 
     @DeleteMapping(path = "/holdings/{id}")
     public Return deleteHolding(@PathVariable ObjectId id) {
-        Holding holding = holdingService.findById(id);
+        var holding = holdingService.findById(id);
         if (holding == null)
             return Return.failure("该藏书不存在, 删除失败");
 
@@ -79,24 +79,23 @@ public class AdminController {
         return Return.success("删除成功");
     }
 
-
     @GetMapping(path = "/loans")
-    public Return showLoans() {
-        return Return.success("查询成功", "List<Loan>", loanService.findAll());
+    public Return listLoans() {
+        return Return.success("查询成功", loanService.findAll());
     }
 
     @PutMapping(path = "/books/{id}")
     public Return updateBook(@PathVariable ObjectId id,
                              @RequestBody BookDto bookDto) {
-        Book book = bookService.findById(id);
+        var book = bookService.findById(id);
         if (book == null)
             return Return.failure("书籍不存在, 修改失败");
 
         if (book.getVisible() && !bookDto.getVisible()) {
-            List<Holding> books = holdingService.findByBookId(book);
-            for (Holding holding : books) {
+            var books = holdingService.findByBook(book);
+            for (var holding : books) {
                 if (holding.getState() == HoldingState.Lent)
-                    return Return.failure("该书籍有图书已被借阅, 修改失败");
+                    return Return.failure("该书籍有藏书已被借阅, 修改失败");
             }
         }
 
@@ -116,7 +115,7 @@ public class AdminController {
         book.setSeriesTitle(bookDto.getSeriesTitle());
         book.setSubjects(bookDto.getSubjects());
         book.setUpdatedTime(new BsonTimestamp(System.currentTimeMillis()));
-        book.setUpdaterSub(bookDto.getUpdaterSub());
+        book.setUpdaterSub("");
 
         bookService.save(book);
         return Return.success("修改成功");
@@ -125,7 +124,7 @@ public class AdminController {
     @PutMapping(path = "/holdings/{id}")
     public Return updateHolding(@PathVariable ObjectId id,
                                 @RequestBody HoldingDto holdingDto) {
-        Holding holding = holdingService.findById(id);
+        var holding = holdingService.findById(id);
         if (holding == null)
             return Return.failure("藏书不存在, 修改失败");
 

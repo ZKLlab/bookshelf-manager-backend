@@ -6,28 +6,27 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
+
 
 @Document
 public class Loan {
-
     @Id
     private ObjectId id;
-    @DBRef
-    private Holding holding;
     private String sub;
-    @DBRef
-    private List<Renewal> renewals = new CopyOnWriteArrayList<>();
+    private ArrayList<Renewal> renewals;
     private Boolean returned;
     private BsonTimestamp lendTime;
     private BsonTimestamp dueTime;
     private BsonTimestamp returnTime;
 
+    @DBRef
+    private Holding holding;
+
     public Loan() {
     }
 
-    public Loan(Holding holding, String sub, List<Renewal> renewals, Boolean returned, BsonTimestamp lendTime, BsonTimestamp dueTime, BsonTimestamp returnTime) {
+    public Loan(Holding holding, String sub, ArrayList<Renewal> renewals, Boolean returned, BsonTimestamp lendTime, BsonTimestamp dueTime, BsonTimestamp returnTime) {
         this.holding = holding;
         this.sub = sub;
         this.renewals = renewals;
@@ -39,6 +38,10 @@ public class Loan {
 
     public ObjectId getId() {
         return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public Holding getHolding() {
@@ -57,8 +60,12 @@ public class Loan {
         this.sub = sub;
     }
 
-    public List<Renewal> getRenewals() {
+    public ArrayList<Renewal> getRenewals() {
         return renewals;
+    }
+
+    public void setRenewals(ArrayList<Renewal> renewals) {
+        this.renewals = renewals;
     }
 
     public void addRenewal(Renewal renewal) {

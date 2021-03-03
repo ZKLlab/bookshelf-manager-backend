@@ -1,22 +1,15 @@
 package com.shuosc.books.web.model;
 
+import com.shuosc.books.web.enums.RenewalReason;
 import org.bson.BsonTimestamp;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
+
 
 public class Renewal {
-
-    @Id
-    private ObjectId id;
     private BsonTimestamp renewTime;
     private BsonTimestamp dueTime;
     private RenewalReason renewalReason;
 
     public Renewal() {
-    }
-
-    public ObjectId getId() {
-        return id;
     }
 
     public BsonTimestamp getRenewTime() {
@@ -46,8 +39,7 @@ public class Renewal {
     @Override
     public String toString() {
         return "Renewal{" +
-                "id=" + id +
-                ", renewTime=" + renewTime +
+                "renewTime=" + renewTime +
                 ", dueTime=" + dueTime +
                 ", renewalReason" + renewalReason +
                 '}';

@@ -1,4 +1,4 @@
-package com.shuosc.books.web.model;
+package com.shuosc.books.web.enums;
 
 public enum RenewalReason {
     Unconditional,

@@ -3,46 +3,35 @@ package com.shuosc.books.web.model;
 public class Return {
     private int returnCode;
     private String msg;
-    private String identity;
     private Object o;
 
-    public Return(int returnCode, String msg, String identity, Object o) {
+    public Return(int returnCode, String msg, Object o) {
         this.returnCode = returnCode;
         this.msg = msg;
-        this.identity = identity;
         this.o = o;
     }
 
     public static Return success(String msg) {
-        return new Return(200, msg, null, null);
-    }
-
-    public static Return success(String msg, String identity) {
-        return new Return(200, msg, identity, null);
-    }
-
-    public static Return success(String msg, String identity, Object o) {
-
-        return new Return(200, msg, identity, o);
+        return new Return(200, msg, null);
     }
 
     public static Return success(String msg, Object o) {
-        return new Return(200, msg, null, o);
+        return new Return(200, msg, o);
     }
 
     public static Return failure(String msg) {
-        return new Return(500, msg, null, null);
+        return new Return(500, msg, null);
     }
 
     public static Return failure(String msg, Object o) {
-        return new Return(500, msg, null, o);
+        return new Return(500, msg, o);
     }
 
-    public int getreturnCode() {
+    public int getReturnCode() {
         return returnCode;
     }
 
-    public void setRetCode(int returnCode) {
+    public void setReturnCode(int returnCode) {
         this.returnCode = returnCode;
     }
 
@@ -52,14 +41,6 @@ public class Return {
 
     public void setMsg(String msg) {
         this.msg = msg;
-    }
-
-    public String getIdentity() {
-        return identity;
-    }
-
-    public void setIdentity(String identity) {
-        this.identity = identity;
     }
 
     public Object getO() {

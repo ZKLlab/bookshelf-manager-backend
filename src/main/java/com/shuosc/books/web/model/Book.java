@@ -6,9 +6,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 @Document
 public class Book {
-
     @Id
     private ObjectId id;
     private String title;
@@ -26,7 +26,7 @@ public class Book {
     private Integer price;
     private Integer doubanId;
     private Boolean visible;
-    private String createrSub;
+    private String creatorSub;
     private String updaterSub;
     private BsonTimestamp createdTime;
     private BsonTimestamp updatedTime;
@@ -41,7 +41,7 @@ public class Book {
                 String clcClassification, String isbn,
                 String language, Integer pages,
                 Integer price, Integer doubanId,
-                Boolean visible, String createrSub) {
+                Boolean visible, String creatorSub) {
         this.title = title;
         this.parallelTitle = parallelTitle;
         this.author = author;
@@ -57,12 +57,19 @@ public class Book {
         this.price = price;
         this.doubanId = doubanId;
         this.visible = visible;
-        this.createrSub = createrSub;
+        this.creatorSub = creatorSub;
         this.createdTime = new BsonTimestamp(System.currentTimeMillis());
     }
 
     public Book() {
+    }
 
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -185,12 +192,12 @@ public class Book {
         this.visible = visible;
     }
 
-    public String getCreaterSub() {
-        return createrSub;
+    public String getCreatorSub() {
+        return creatorSub;
     }
 
-    public void setCreaterSub(String createrSub) {
-        this.createrSub = createrSub;
+    public void setCreatorSub(String creatorSub) {
+        this.creatorSub = creatorSub;
     }
 
     public String getUpdaterSub() {
@@ -205,8 +212,16 @@ public class Book {
         return createdTime;
     }
 
+    public void setCreatedTime(BsonTimestamp createdTime) {
+        this.createdTime = createdTime;
+    }
+
     public BsonTimestamp getUpdatedTime() {
         return updatedTime;
+    }
+
+    public void setUpdatedTime(BsonTimestamp updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
     public BsonTimestamp getDeletedTime() {
@@ -223,18 +238,6 @@ public class Book {
 
     public void setVersion(Long version) {
         this.version = version;
-    }
-
-    public void setCreatedTime(BsonTimestamp createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public void setUpdatedTime(BsonTimestamp updatedTime) {
-        this.updatedTime = updatedTime;
-    }
-
-    public ObjectId getId() {
-        return id;
     }
 
     @Override

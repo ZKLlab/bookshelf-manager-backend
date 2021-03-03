@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class BookServiceImpl implements BookService {
-
-    private MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
     @Autowired
     public BookServiceImpl(MongoTemplate mongoTemplate) {

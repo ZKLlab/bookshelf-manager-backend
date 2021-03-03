@@ -7,8 +7,11 @@ import org.bson.types.ObjectId;
 
 import java.util.List;
 
+
 public interface LoanService {
-    void save(String sub, Holding holding);
+    Loan createLoanBySubAndHolding(String sub, Holding holding);
+
+    void save(Loan loan);
 
     void update(ObjectId id, Loan loan);
 
@@ -16,9 +19,9 @@ public interface LoanService {
 
     List<Loan> findAll();
 
-    void updateDuetime(ObjectId id);
+    void updateDueTime(ObjectId id);
 
-    void updateReturntime(ObjectId id);
+    void updateReturnTime(ObjectId id);
 
     Loan findBySubHolding(String sub, Holding holding);
 
@@ -26,7 +29,7 @@ public interface LoanService {
 
     Loan findById(ObjectId id);
 
-    void updateReturntime(String sub, Holding holding);
+    void updateReturnTime(String sub, Holding holding);
 
     Loan findByHolding(Holding holding);
 

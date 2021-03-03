@@ -2,7 +2,7 @@ package com.shuosc.books.web.service.impl;
 
 import com.shuosc.books.web.model.Book;
 import com.shuosc.books.web.model.Holding;
-import com.shuosc.books.web.model.HoldingState;
+import com.shuosc.books.web.enums.HoldingState;
 import com.shuosc.books.web.service.HoldingService;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -17,8 +17,7 @@ import java.util.List;
 
 @Service
 public class HoldingServiceImpl implements HoldingService {
-
-    private MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
     @Autowired
     public HoldingServiceImpl(MongoTemplate mongoTemplate) {
@@ -74,7 +73,7 @@ public class HoldingServiceImpl implements HoldingService {
     }
 
     @Override
-    public List<Holding> findByBookId(Book book) {
+    public List<Holding> findByBook(Book book) {
         return mongoTemplate.find(Query.query(Criteria.where("book").is(book)),
                 Holding.class);
     }

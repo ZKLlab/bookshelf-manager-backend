@@ -17,23 +17,29 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class LoanServiceImpl implements LoanService {
-
-    private MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
     @Autowired
     public LoanServiceImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public void save(String sub, Holding holding) {
-        Loan loan = new Loan();
+    @Override
+    public Loan createLoanBySubAndHolding(String sub, Holding holding) {
+        var loan = new Loan();
         loan.setSub(sub);
         loan.setHolding(holding);
         loan.setReturned(false);
         loan.setLendTime(new BsonTimestamp(System.currentTimeMillis()));
         loan.setDueTime(new BsonTimestamp(System.currentTimeMillis() + BooksConstant.BORROWING_TIME_MILLIS));
+        return loan;
+    }
+
+    @Override
+    public void save(Loan loan) {
         mongoTemplate.save(loan);
     }
 
@@ -49,7 +55,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void updateReturntime(ObjectId id) {
+    public void updateReturnTime(ObjectId id) {
         Update update = Update.update("returnTime", new BsonTimestamp(System.currentTimeMillis()));
         mongoTemplate
                 .updateFirst(Query.query(Criteria.where("id").is(id)),
@@ -89,7 +95,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void updateReturntime(String sub, Holding holding) {
+    public void updateReturnTime(String sub, Holding holding) {
         Update update = Update.update("returnTime", new BsonTimestamp(System.currentTimeMillis()));
         Query query = new Query();
         query.addCriteria(new Criteria()
@@ -124,7 +130,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void updateDuetime(ObjectId id) {
+    public void updateDueTime(ObjectId id) {
         Update update = Update.update("dueTime", new BsonTimestamp(System.currentTimeMillis() + BooksConstant.BORROWING_TIME_MILLIS));
         mongoTemplate
                 .updateFirst(Query.query(Criteria.where("id").is(id)),

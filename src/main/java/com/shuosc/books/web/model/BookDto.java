@@ -1,11 +1,6 @@
-package com.shuosc.books.web.dto;
-
-import org.bson.BsonTimestamp;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
+package com.shuosc.books.web.model;
 
 public class BookDto {
-
     private String title;
     private String parallelTitle;
     private String author;
@@ -21,7 +16,6 @@ public class BookDto {
     private Integer price;
     private Integer doubanId;
     private Boolean visible;
-    private String updaterSub;
 
     public String getTitle() {
         return title;
@@ -141,13 +135,5 @@ public class BookDto {
 
     public void setVisible(Boolean visible) {
         this.visible = visible;
-    }
-
-    public String getUpdaterSub() {
-        return updaterSub;
-    }
-
-    public void setUpdaterSub(String updaterSub) {
-        this.updaterSub = updaterSub;
     }
 }

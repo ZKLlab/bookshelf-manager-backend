@@ -1,7 +1,6 @@
-package com.shuosc.books.web.model;
+package com.shuosc.books.web.enums;
 
 public enum HoldingState {
-
     Unlisted,
     Lending,
     Lent,
@@ -9,6 +8,4 @@ public enum HoldingState {
     Closed,
     Damaged,
     Lost
-
 }
-

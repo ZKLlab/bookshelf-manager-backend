@@ -1,5 +1,6 @@
 package com.shuosc.books.web.model;
 
+import com.shuosc.books.web.enums.HoldingState;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -8,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Holding {
-
     @Id
     private ObjectId id;
     @DBRef

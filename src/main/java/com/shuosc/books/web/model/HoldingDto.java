@@ -1,9 +1,9 @@
-package com.shuosc.books.web.dto;
+package com.shuosc.books.web.model;
 
-import com.shuosc.books.web.model.HoldingState;
+import com.shuosc.books.web.enums.HoldingState;
+
 
 public class HoldingDto {
-
     private String place;
     private Integer shelf;
     private Integer row;
