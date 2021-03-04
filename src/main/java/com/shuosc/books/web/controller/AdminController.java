@@ -35,7 +35,7 @@ public class AdminController {
     }
 
     @PostMapping(path = "/books")
-    public Return createBook(@RequestBody @Valid BookDto dto) {
+    public Return createBook(@RequestBody @Valid CreateOrUpdateBookDto dto) {
         var book = new Book(
                 dto.getTitle(),
                 dto.getParallelTitle(),
@@ -71,7 +71,7 @@ public class AdminController {
     }
 
     @PostMapping(path = "/books/{id}/holdings")
-    public Return createHolding(@PathVariable String id, @RequestBody @Valid HoldingDto dto) {
+    public Return createHolding(@PathVariable String id, @RequestBody @Valid CreateOrUpdateHoldingDto dto) {
         var book = bookService.findById(id);
 
         if (book == null)
@@ -98,26 +98,26 @@ public class AdminController {
 
     @PutMapping(path = "/books/{id}")
     public Return updateBook(@PathVariable String id,
-                             @RequestBody BookDto bookDto) {
+                             @RequestBody CreateOrUpdateBookDto dto) {
         var book = bookService.findById(id);
         if (book == null)
             return Return.failure("书籍不存在, 修改失败");
 
-        book.setTitle(bookDto.getTitle());
-        book.setAuthor(bookDto.getAuthor());
-        book.setClcClassification(bookDto.getClcClassification());
-        book.setIsbn(bookDto.getIsbn());
-        book.setLanguage(bookDto.getLanguage());
-        book.setPages(bookDto.getPages());
-        book.setPrice(bookDto.getPrice());
-        book.setVisible(bookDto.getVisible());
-        book.setSummary(bookDto.getSummary());
-        book.setDoubanId(bookDto.getDoubanId());
-        book.setParallelTitle(bookDto.getParallelTitle());
-        book.setPublicationDate(bookDto.getPublicationDate());
-        book.setPublisher(bookDto.getPublisher());
-        book.setSeriesTitle(bookDto.getSeriesTitle());
-        book.setSubjects(bookDto.getSubjects());
+        book.setTitle(dto.getTitle());
+        book.setAuthor(dto.getAuthor());
+        book.setClcClassification(dto.getClcClassification());
+        book.setIsbn(dto.getIsbn());
+        book.setLanguage(dto.getLanguage());
+        book.setPages(dto.getPages());
+        book.setPrice(dto.getPrice());
+        book.setVisible(dto.getVisible());
+        book.setSummary(dto.getSummary());
+        book.setDoubanId(dto.getDoubanId());
+        book.setParallelTitle(dto.getParallelTitle());
+        book.setPublicationDate(dto.getPublicationDate());
+        book.setPublisher(dto.getPublisher());
+        book.setSeriesTitle(dto.getSeriesTitle());
+        book.setSubjects(dto.getSubjects());
 
         bookService.save(book);
         return Return.success("修改成功");
@@ -125,16 +125,16 @@ public class AdminController {
 
     @PutMapping(path = "/holdings/{id}")
     public Return updateHolding(@PathVariable String id,
-                                @RequestBody @Valid HoldingDto holdingDto) {
+                                @RequestBody @Valid CreateOrUpdateHoldingDto createOrUpdateHoldingDto) {
         var holding = holdingService.findById(id);
         if (holding == null)
             return Return.failure("藏书不存在, 修改失败");
 
-        holding.setCallNumber(holdingDto.getCallNumber());
-        holding.setPlace(holdingDto.getPlace());
-        holding.setRow(holdingDto.getRow());
-        holding.setShelf(holdingDto.getShelf());
-        holding.setState(holdingDto.getState());
+        holding.setCallNumber(createOrUpdateHoldingDto.getCallNumber());
+        holding.setPlace(createOrUpdateHoldingDto.getPlace());
+        holding.setRow(createOrUpdateHoldingDto.getRow());
+        holding.setShelf(createOrUpdateHoldingDto.getShelf());
+        holding.setState(createOrUpdateHoldingDto.getState());
 
         holdingService.save(holding);
         return Return.success("修改成功");

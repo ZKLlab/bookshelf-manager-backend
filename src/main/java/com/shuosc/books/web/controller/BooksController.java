@@ -1,7 +1,6 @@
 package com.shuosc.books.web.controller;
 
-import com.shuosc.books.web.model.Book;
-import com.shuosc.books.web.model.Return;
+import com.shuosc.books.web.model.*;
 import com.shuosc.books.web.service.BookService;
 import com.shuosc.books.web.service.HoldingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 
@@ -39,7 +38,20 @@ public class BooksController {
                             : 0;
                     return b - a;
                 })
-                .collect(Collectors.toCollection(ArrayList::new));
+                .map(book -> new ListBookDto(
+                        book.getId(),
+                        book.getTitle(),
+                        book.getParallelTitle(),
+                        book.getAuthor(),
+                        book.getSeriesTitle(),
+                        book.getPublisher(),
+                        book.getSubjects(),
+                        book.getPublicationDate(),
+                        book.getClcClassification(),
+                        book.getIsbn(),
+                        book.getLanguage()
+                ))
+                .collect(Collectors.toList());
         return Return.success("查询成功", books);
     }
 
@@ -48,13 +60,36 @@ public class BooksController {
         var book = bookService.findById(id);
         if (book == null || !book.getVisible())
             return Return.failure("图书不存在，获取失败");
+        var holdings = holdingService.findByBook(book);
 
-        return Return.success("获取成功", bookService.findById(id));
-    }
-
-    @GetMapping(path = "/books/{id}/holdings")
-    public Return getBookHoldings(@PathVariable String id) {
-        return Return.success("查询成功",
-                holdingService.findByBook(bookService.findById(id)));
+        return Return.success("获取成功", new GetBookDto(
+                book.getId(),
+                book.getTitle(),
+                book.getParallelTitle(),
+                book.getAuthor(),
+                book.getSeriesTitle(),
+                book.getSummary(),
+                book.getPublisher(),
+                book.getSubjects(),
+                book.getPublicationDate(),
+                book.getClcClassification(),
+                book.getIsbn(),
+                book.getLanguage(),
+                book.getPages(),
+                book.getPrice(),
+                book.getDoubanId(),
+                holdings.stream()
+                        .sorted(Comparator.comparing(Holding::getBarcode))
+                        .map(holding -> new GetBookDtoHolding(
+                                holding.getId(),
+                                holding.getBarcode(),
+                                holding.getPlace(),
+                                holding.getShelf(),
+                                holding.getRow(),
+                                holding.getCallNumber(),
+                                holding.getState()
+                        ))
+                        .collect(Collectors.toList())
+        ));
     }
 }

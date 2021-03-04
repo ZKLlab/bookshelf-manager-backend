@@ -2,25 +2,44 @@ package com.shuosc.books.web.model;
 
 import com.shuosc.books.web.enums.HoldingState;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-
-public class HoldingDto {
-    @NotNull
+public class GetBookDtoHolding {
+    private String id;
+    private String barcode;
     private String place;
-    @NotNull
-    @Min(1)
     private Integer shelf;
-    @NotNull
-    @Min(1)
     private Integer row;
-    @NotNull
-    @NotBlank
     private String callNumber;
-    @NotNull
     private HoldingState state;
+
+    public GetBookDtoHolding() {
+    }
+
+    public GetBookDtoHolding(String id, String barcode, String place, Integer shelf, Integer row, String callNumber, HoldingState state) {
+        this.id = id;
+        this.barcode = barcode;
+        this.place = place;
+        this.shelf = shelf;
+        this.row = row;
+        this.callNumber = callNumber;
+        this.state = state;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
 
     public String getPlace() {
         return place;

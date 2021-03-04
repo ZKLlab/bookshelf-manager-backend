@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
-public class BookDto {
+public class CreateOrUpdateBookDto {
     @NotNull
     @NotBlank
     private String title;

@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -75,11 +74,11 @@ public class ExcelImportServiceImpl implements ExcelImportService {
                         continue;
 
                     var subjects = Stream.of(words[6].split("[，,]"))
-                            .collect(Collectors.toCollection(ArrayList::new));
+                            .collect(Collectors.toList());
 
                     var date = Stream.of(words[7].split("[，,]"))
                             .map(Integer::parseInt)
-                            .collect(Collectors.toCollection(ArrayList::new));
+                            .collect(Collectors.toList());
 
                     var book = new Book(words[0], words[1], words[2],
                             words[3], words[4], words[5],
@@ -94,7 +93,7 @@ public class ExcelImportServiceImpl implements ExcelImportService {
                 }
                 return Return.success("导入成功");
             } else {
-            return Return.failure("未知异常, 导入失败");
+                return Return.failure("未知异常, 导入失败");
             }
         } catch (IOException e) {
             return Return.failure("未知异常, 导入失败");
@@ -119,33 +118,33 @@ public class ExcelImportServiceImpl implements ExcelImportService {
             // 获得第一张sheet表
             var sheet = workbook.getSheetAt(0);
             if (sheet != null) {
-                var words = new String[15];
+                var words = new String[6];
                 // 数据是从第三行开始，所以这里从第三行开始遍历
                 for (int line = 2; line <= sheet.getLastRowNum(); line++) {
                     Row row = sheet.getRow(line);
                     if (row == null)
                         continue;
                     int i = 0;
-                    for (; i < 7; i++) {
+                    for (; i < 6; i++) {
                         if (CellType.STRING != row.getCell(i).getCellType())
                             break;
                         words[i] = row.getCell(i).getStringCellValue();
                     }
 
-                    if (i != 7)
+                    if (i != 6)
                         continue;
 
-                    Book book = bookService.findById(words[0]);
+                    var book = bookService.findById(words[0]);
                     if (book == null)
                         continue;
 
-                    HoldingState state = parseHoldingState(words[6]);
+                    var state = parseHoldingState(words[5]);
                     if (state == null)
                         continue;
 
-                    Holding holding = new Holding(book, words[1],
-                            words[2], Integer.parseInt(words[3]), Integer.parseInt(words[4]),
-                            words[5], state);
+                    Holding holding = new Holding(book, words[0],
+                            words[1], Integer.parseInt(words[2]), Integer.parseInt(words[3]),
+                            words[4], state);
                     holdingService.save(holding);
                 }
                 return Return.success("导入成功");

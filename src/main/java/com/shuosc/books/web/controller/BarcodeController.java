@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 
@@ -35,7 +34,7 @@ public class BarcodeController {
             var result = barcodeService.getBarcodeResult(image)
                     .stream()
                     .map(BarcodeResult::getText)
-                    .collect(Collectors.toCollection(ArrayList::new));
+                    .collect(Collectors.toList());
             return Return.success("", result);
         } catch (IOException e) {
             return Return.failure("未知错误");
