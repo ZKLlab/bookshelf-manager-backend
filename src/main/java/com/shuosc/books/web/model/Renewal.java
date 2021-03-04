@@ -1,30 +1,37 @@
 package com.shuosc.books.web.model;
 
 import com.shuosc.books.web.enums.RenewalReason;
-import org.bson.BsonTimestamp;
+
+import java.util.Date;
 
 
 public class Renewal {
-    private BsonTimestamp renewTime;
-    private BsonTimestamp dueTime;
+    private Date renewTime;
+    private Date dueTime;
     private RenewalReason renewalReason;
 
     public Renewal() {
     }
 
-    public BsonTimestamp getRenewTime() {
+    public Renewal(Date renewTime, Date dueTime, RenewalReason renewalReason) {
+        this.renewTime = renewTime;
+        this.dueTime = dueTime;
+        this.renewalReason = renewalReason;
+    }
+
+    public Date getRenewTime() {
         return renewTime;
     }
 
-    public void setRenewTime(BsonTimestamp renewTime) {
+    public void setRenewTime(Date renewTime) {
         this.renewTime = renewTime;
     }
 
-    public BsonTimestamp getDueTime() {
+    public Date getDueTime() {
         return dueTime;
     }
 
-    public void setDueTime(BsonTimestamp dueTime) {
+    public void setDueTime(Date dueTime) {
         this.dueTime = dueTime;
     }
 
@@ -34,14 +41,5 @@ public class Renewal {
 
     public void setRenewalReason(RenewalReason renewalReason) {
         this.renewalReason = renewalReason;
-    }
-
-    @Override
-    public String toString() {
-        return "Renewal{" +
-                "renewTime=" + renewTime +
-                ", dueTime=" + dueTime +
-                ", renewalReason" + renewalReason +
-                '}';
     }
 }

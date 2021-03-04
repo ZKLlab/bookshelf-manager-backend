@@ -1,11 +1,11 @@
 package com.shuosc.books.web.model;
 
-import org.bson.BsonTimestamp;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -14,26 +14,22 @@ public class Loan {
     @Id
     private String id;
     private String sub;
-    private List<Renewal> renewals;
-    private Boolean returned;
-    private BsonTimestamp lendTime;
-    private BsonTimestamp dueTime;
-    private BsonTimestamp returnTime;
-
     @DBRef
     private Holding holding;
+    private List<Renewal> renewals;
+    private Date lendTime;
+    private Date dueTime;
+    private Date returnTime;
 
     public Loan() {
     }
 
-    public Loan(Holding holding, String sub, List<Renewal> renewals, Boolean returned, BsonTimestamp lendTime, BsonTimestamp dueTime, BsonTimestamp returnTime) {
-        this.holding = holding;
+    public Loan(String sub, Holding holding, Date lendTime, Date dueTime) {
         this.sub = sub;
-        this.renewals = renewals;
-        this.returned = returned;
+        this.holding = holding;
+        this.renewals = new ArrayList<>();
         this.lendTime = lendTime;
         this.dueTime = dueTime;
-        this.returnTime = returnTime;
     }
 
     public String getId() {
@@ -44,20 +40,20 @@ public class Loan {
         this.id = id;
     }
 
-    public Holding getHolding() {
-        return holding;
-    }
-
-    public void setHolding(Holding holding) {
-        this.holding = holding;
-    }
-
     public String getSub() {
         return sub;
     }
 
     public void setSub(String sub) {
         this.sub = sub;
+    }
+
+    public Holding getHolding() {
+        return holding;
+    }
+
+    public void setHolding(Holding holding) {
+        this.holding = holding;
     }
 
     public List<Renewal> getRenewals() {
@@ -68,39 +64,27 @@ public class Loan {
         this.renewals = renewals;
     }
 
-    public void addRenewal(Renewal renewal) {
-        this.renewals.add(renewal);
-    }
-
-    public Boolean getReturned() {
-        return returned;
-    }
-
-    public void setReturned(Boolean returned) {
-        this.returned = returned;
-    }
-
-    public BsonTimestamp getLendTime() {
+    public Date getLendTime() {
         return lendTime;
     }
 
-    public void setLendTime(BsonTimestamp lendTime) {
+    public void setLendTime(Date lendTime) {
         this.lendTime = lendTime;
     }
 
-    public BsonTimestamp getDueTime() {
+    public Date getDueTime() {
         return dueTime;
     }
 
-    public void setDueTime(BsonTimestamp dueTime) {
+    public void setDueTime(Date dueTime) {
         this.dueTime = dueTime;
     }
 
-    public BsonTimestamp getReturnTime() {
+    public Date getReturnTime() {
         return returnTime;
     }
 
-    public void setReturnTime(BsonTimestamp returnTime) {
+    public void setReturnTime(Date returnTime) {
         this.returnTime = returnTime;
     }
 }

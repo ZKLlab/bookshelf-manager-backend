@@ -1,6 +1,5 @@
 package com.shuosc.books.web.controller;
 
-import com.shuosc.books.web.constant.BooksConstant;
 import com.shuosc.books.web.enums.HoldingState;
 import com.shuosc.books.web.enums.RenewalReason;
 import com.shuosc.books.web.model.BorrowResultDto;
@@ -8,7 +7,6 @@ import com.shuosc.books.web.model.Renewal;
 import com.shuosc.books.web.model.Return;
 import com.shuosc.books.web.service.HoldingService;
 import com.shuosc.books.web.service.LoanService;
-import org.bson.BsonTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,29 +55,11 @@ public class LoansController {
                     barcode,
                     holding.getBook().getTitle(),
                     holding.getBook().getAuthor(),
-                    "请于" + formatter.format(new Date(loan.getDueTime().getValue())) + "前归还"
+                    "请于" + formatter.format(loan.getDueTime()) + "前归还或续借"
             ));
         }
 
         return Return.success("", results);
-    }
-
-    @PostMapping(path = "/loans/{id}/return")
-    public Return returnHolding(Principal principal, @PathVariable String id) {
-        var loan = loanService.findById(id);
-        if (loan == null || !loan.getSub().equals(principal.getName()))
-            return Return.failure("你没有借这本书，还书失败");
-
-        if (loan.getReturned())
-            return Return.failure("你已经还过这本书了");
-
-        var holding = loan.getHolding();
-        holding.setState(HoldingState.Lending);
-
-        loanService.updateReturnTime(loan.getId(), holding);
-        holdingService.save(holding);
-
-        return Return.success("还书成功");
     }
 
     @GetMapping(path = "/loans")
@@ -88,21 +68,40 @@ public class LoansController {
         return Return.success("查询成功", loans);
     }
 
-    @PostMapping(path = "/loans/{id}/renew")
-    public Return renew(String sub, @PathVariable String id) {
+    @PostMapping(path = "/loans/{id}/return")
+    public Return returnHolding(Principal principal, @PathVariable String id) {
         var loan = loanService.findById(id);
-        if (loan == null || !loan.getSub().equals(sub))
+        if (loan == null || !loan.getSub().equals(principal.getName()))
+            return Return.failure("找不到记录");
+
+        if (loan.getReturnTime() != null)
+            return Return.failure("你已经还过这本书了");
+
+        var holding = loan.getHolding();
+        holding.setState(HoldingState.Lending);
+
+        loanService.updateReturnTime(loan.getId());
+        holdingService.save(holding);
+
+        return Return.success("还书成功");
+    }
+
+    @PostMapping(path = "/loans/{id}/renew")
+    public Return renew(Principal principal, @PathVariable String id) {
+        var loan = loanService.findById(id);
+        if (loan == null || !loan.getSub().equals(principal.getName()))
             return Return.failure("记录不存在");
+
+        if (loan.getReturnTime() != null)
+            return Return.failure("你已经归还了这本书");
 
         if (loan.getRenewals().stream().anyMatch(renewal -> renewal.getRenewalReason() == RenewalReason.Unconditional))
             return Return.failure("你已经续借过一次了");
 
-        var renewal = new Renewal();
-        renewal.setRenewalReason(RenewalReason.Unconditional);
-        renewal.setRenewTime(new BsonTimestamp(System.currentTimeMillis()));
-        renewal.setDueTime(new BsonTimestamp(renewal.getRenewTime().getTime() + BooksConstant.BORROWING_TIME_MILLIS));
+        var dueTime = loanService.getDueTime();
+        var renewal = new Renewal(new Date(), dueTime, RenewalReason.Unconditional);
 
-        loanService.updateDueTime(loan.getId());
+        loanService.updateDueTime(loan.getId(), dueTime);
         loanService.updateRenewals(loan.getId(), renewal);
         return Return.success("续借成功");
     }

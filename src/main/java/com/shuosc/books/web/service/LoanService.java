@@ -5,11 +5,14 @@ import com.shuosc.books.web.model.Loan;
 import com.shuosc.books.web.model.Renewal;
 import org.bson.types.ObjectId;
 
+import java.util.Date;
 import java.util.List;
 
 
 public interface LoanService {
     Loan createLoanBySubAndHolding(String sub, Holding holding);
+
+    Date getDueTime();
 
     void save(Loan loan);
 
@@ -19,7 +22,7 @@ public interface LoanService {
 
     List<Loan> findAll();
 
-    void updateDueTime(String id);
+    void updateDueTime(String id, Date dueTime);
 
     void updateReturnTime(String id);
 
@@ -28,8 +31,6 @@ public interface LoanService {
     void updateRenewals(String id, Renewal renewal);
 
     Loan findById(String id);
-
-    void updateReturnTime(String sub, Holding holding);
 
     Loan findByHolding(Holding holding);
 
