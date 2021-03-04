@@ -1,6 +1,7 @@
 package com.shuosc.books.web.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -25,6 +26,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/api/loans").authenticated()
+                .antMatchers("/api/loans/**").authenticated()
+                .antMatchers("/api/borrow").hasAnyAuthority("ROLE_reader")
+                .antMatchers("/api/admin/**").hasAnyAuthority("ROLE_admin")
+                .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and().oauth2ResourceServer().jwt()
                 .jwtAuthenticationConverter(jwtAuthenticationConverter());
