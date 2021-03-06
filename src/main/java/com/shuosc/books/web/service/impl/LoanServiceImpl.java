@@ -117,6 +117,18 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    public List<Loan> findNotReturnedBySub(String sub) {
+        var query = new Query();
+        query.addCriteria(new Criteria()
+                .andOperator(
+                        Criteria.where("sub").is(sub),
+                        Criteria.where("returnTime").is(null)
+                ));
+        return mongoTemplate
+                .find(query, Loan.class);
+    }
+
+    @Override
     public void updateDueTime(String id, Date dueTime) {
         var update = Update.update("dueTime", dueTime);
         mongoTemplate

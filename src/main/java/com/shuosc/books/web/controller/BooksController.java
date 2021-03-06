@@ -1,5 +1,6 @@
 package com.shuosc.books.web.controller;
 
+import com.shuosc.books.web.enums.HoldingState;
 import com.shuosc.books.web.model.*;
 import com.shuosc.books.web.service.BookService;
 import com.shuosc.books.web.service.HoldingService;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 
@@ -30,10 +30,10 @@ public class BooksController {
         var books = bookService.findAll().stream()
                 .filter(Book::getVisible)
                 .sorted((o1, o2) -> {
-                    var a = o1.getPublicationDate().isEmpty()
+                    var a = !o1.getPublicationDate().isEmpty()
                             ? o1.getPublicationDate().get(0)
                             : 0;
-                    var b = o2.getPublicationDate().isEmpty()
+                    var b = !o2.getPublicationDate().isEmpty()
                             ? o2.getPublicationDate().get(0)
                             : 0;
                     return b - a;
@@ -79,7 +79,9 @@ public class BooksController {
                 book.getPrice(),
                 book.getDoubanId(),
                 holdings.stream()
-                        .sorted(Comparator.comparing(Holding::getBarcode))
+                        .filter(holding -> holding.getState() != HoldingState.Unlisted
+                                && holding.getState() != HoldingState.Damaged
+                                && holding.getState() != HoldingState.Lost)
                         .map(holding -> new GetBookDtoHolding(
                                 holding.getId(),
                                 holding.getBarcode(),
