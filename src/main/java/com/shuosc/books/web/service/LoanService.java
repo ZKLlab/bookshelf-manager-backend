@@ -20,6 +20,8 @@ public interface LoanService {
 
     List<Loan> findBySub(String sub);
 
+    List<Loan> findNotReturnedBySub(String sub);
+
     List<Loan> findAll();
 
     void updateDueTime(String id, Date dueTime);

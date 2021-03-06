@@ -3,6 +3,7 @@ package com.shuosc.books.web.controller;
 import com.shuosc.books.web.enums.HoldingState;
 import com.shuosc.books.web.enums.RenewalReason;
 import com.shuosc.books.web.model.BorrowResultDto;
+import com.shuosc.books.web.model.Loan;
 import com.shuosc.books.web.model.Renewal;
 import com.shuosc.books.web.model.Return;
 import com.shuosc.books.web.service.HoldingService;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 
 @RestController
@@ -63,8 +66,14 @@ public class LoansController {
     }
 
     @GetMapping(path = "/loans")
-    public Return listLoans(Principal principal) {
-        var loans = loanService.findBySub(principal.getName());
+    public Return listLoans(Principal principal, @RequestParam(required = false) String mode) {
+        List<Loan> loans;
+        if (mode != null && mode.equalsIgnoreCase("all")) {
+            loans = loanService.findBySub(principal.getName());
+        } else {
+            loans = loanService.findNotReturnedBySub(principal.getName());
+        }
+        Collections.reverse(loans);
         return Return.success("查询成功", loans);
     }
 

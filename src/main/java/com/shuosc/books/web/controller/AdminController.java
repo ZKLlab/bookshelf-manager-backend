@@ -96,7 +96,7 @@ public class AdminController {
         return Return.success("查询成功", loanService.findAll());
     }
 
-    @PutMapping(path = "/books/{id}")
+    @PatchMapping(path = "/books/{id}")
     public Return updateBook(@PathVariable String id,
                              @RequestBody CreateOrUpdateBookDto dto) {
         var book = bookService.findById(id);
@@ -123,7 +123,7 @@ public class AdminController {
         return Return.success("修改成功");
     }
 
-    @PutMapping(path = "/holdings/{id}")
+    @PatchMapping(path = "/holdings/{id}")
     public Return updateHolding(@PathVariable String id,
                                 @RequestBody @Valid CreateOrUpdateHoldingDto createOrUpdateHoldingDto) {
         var holding = holdingService.findById(id);
@@ -137,6 +137,17 @@ public class AdminController {
         holding.setState(createOrUpdateHoldingDto.getState());
 
         holdingService.save(holding);
+        return Return.success("修改成功");
+    }
+
+    @PostMapping(path = "/loans/{id}/return")
+    public Return returnLoan(@PathVariable String id) {
+        var loan = loanService.findById(id);
+        if (loan == null)
+            return Return.failure("借阅记录不存在, 修改失败");
+
+        loanService.updateReturnTime(id);
+
         return Return.success("修改成功");
     }
 
