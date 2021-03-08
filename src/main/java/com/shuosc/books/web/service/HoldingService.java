@@ -25,4 +25,6 @@ public interface HoldingService {
     List<Holding> findByBook(Book book);
 
     void saveAll(List<Holding> holdings);
+
+    List<Holding> findBy(String place, Integer shelf, Integer row, HoldingState[] holdingStates);
 }
