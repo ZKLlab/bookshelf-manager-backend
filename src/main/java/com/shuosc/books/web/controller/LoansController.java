@@ -2,10 +2,7 @@ package com.shuosc.books.web.controller;
 
 import com.shuosc.books.web.enums.HoldingState;
 import com.shuosc.books.web.enums.RenewalReason;
-import com.shuosc.books.web.model.BorrowResultDto;
-import com.shuosc.books.web.model.Loan;
-import com.shuosc.books.web.model.Renewal;
-import com.shuosc.books.web.model.Return;
+import com.shuosc.books.web.model.*;
 import com.shuosc.books.web.service.HoldingService;
 import com.shuosc.books.web.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,5 +110,39 @@ public class LoansController {
         loanService.updateDueTime(loan.getId(), dueTime);
         loanService.updateRenewals(loan.getId(), renewal);
         return Return.success("续借成功");
+    }
+
+    @GetMapping(path = "/loans/{id}")
+    public Return getLoan(Principal principal, @PathVariable String id) {
+        var loan = loanService.findById(id);
+        if (loan == null)
+            return Return.failure("记录不存在");
+        var holding = loan.getHolding();
+
+        var place = holding.getPlace();
+        var shelf = holding.getShelf();
+        var row = holding.getRow();
+
+        if (loan.getReturnTime() != null)
+            return Return.success("查询成功",
+                    new GetLoanDto(loan.getId(),
+                            loan.getSub(), loan.getHolding(),
+                            loan.getRenewals(), loan.getLendTime(),
+                            loan.getDueTime(), loan.getReturnTime(),
+                            null));
+
+        var holdings = holdingService
+                .findBy(place, shelf, row,
+                        new HoldingState[]{HoldingState.Lost,
+                                HoldingState.Unlisted,
+                                HoldingState.Damaged});
+
+        return Return.success("查询成功",
+                new GetLoanDto(loan.getId(),
+                        loan.getSub(), loan.getHolding(),
+                        loan.getRenewals(), loan.getLendTime(),
+                        loan.getDueTime(), loan.getReturnTime(),
+                        holdings));
+
     }
 }
