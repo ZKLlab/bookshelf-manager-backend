@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 
@@ -33,6 +34,8 @@ public class BarcodeController {
             var image = ImageIO.read(inputStream);
             var result = barcodeService.getBarcodeResult(image)
                     .stream()
+                    .sorted(Comparator.comparing(BarcodeResult::isHorizontal)
+                            .thenComparingInt(BarcodeResult::getResultPoint))
                     .map(BarcodeResult::getText)
                     .collect(Collectors.toList());
             return Return.success("", result);
